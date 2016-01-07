@@ -1,0 +1,91 @@
+#!/bin/bash
+
+   
+
+function generate {
+    hadoop jar ${NUTCH_DIR}/lib/nutch-2.2.jar org.apache.nutch.crawl.GeneratorJob ${ARGS2} -batchId ${batchID} -topN 44 &> tmp
+    if (($? != 0)); then cat tmp; exit -1; fi
+    generated=`grep GENERATE tmp | awk -F "=" '{print $2}'`
+    limit=`grep LIMIT tmp | awk -F "=" '{print $2}'`
+    elapsed=`grep "finished at" tmp | awk -F "elapsed" '{print $2}' | awk -F " " '{print $2}' | awk -F : '{print $1*3600+$2*60+$3}'`
+    echo "GENERATE ${elapsed} GENERATED=${generated} LIMIT=${limit}"
+    if [ "${generated}" == "" ]; then exit 0; fi
+}
+
+function fetch {
+    hadoop jar ${NUTCH_DIR}/lib/nutch-2.2.jar org.apache.nutch.fetcher.FetcherJob ${ARGS} ${batchID} &> tmp
+    if (($? != 0)); then cat tmp; exit -1; fi
+    success=`grep SUCCESS tmp | awk -F "=" '{print $2}'`
+    notfound=`grep NOTFOUND tmp | awk -F "=" '{print $2}'`
+    exception=`grep EXCEPTION tmp | awk -F "=" '{print $2}'`
+    temp_moved=`grep MOVED tmp | awk -F "=" '{print $2}'`
+    elapsed=`grep "finished at" tmp | awk -F "elapsed" '{print $2}' | awk -F " " '{print $2}' | awk -F : '{print $1*3600+$2*60+$3}'`
+    echo "FETCH ${elapsed} SUCCESS=${success} NOTFOUND=${notfound} EXC=${exception} MOVED=${temp_moved}"
+}
+
+
+function dbupdate {
+    hadoop jar ${NUTCH_DIR}/lib/nutch-2.2.jar org.apache.nutch.crawl.DbUpdaterJob ${ARGS2} -all &> tmp
+    if (($? != 0)); then cat tmp; exit -1; fi
+    elapsed=`grep "finished at" tmp | awk -F "elapsed" '{print $2}' | awk -F " " '{print $2}' | awk -F : '{print $1*3600+$2*60+$3}'`
+    upages=`grep "UPDATED_PAGES" tmp | awk -F "=" '{print $2}'`
+    ulinks=`grep "UPDATED_LINKS" tmp | awk -F "=" '{print $2}'`
+    npages=`grep "NEW_PAGES" tmp | awk -F "=" '{print $2}'`
+    echo "DBUPDATE ${elapsed} UPAGES=${upages} ULINKS=${ulinks} NPAGES=${npages}"
+}
+
+function inject {
+    hadoop jar ${NUTCH_DIR}/lib/nutch-2.2.jar org.apache.nutch.crawl.InjectorJob ${ARGS} /inject &> tmp
+    if (($? != 0)); then cat tmp; exit -1; fi
+    injected=`grep urls_injected tmp | awk -F "=" '{print $2}'`
+    filtered=`grep urls_filtered tmp | awk -F "=" '{print $2}'`
+    elapsed=`grep "finished at" tmp | awk -F "elapsed" '{print $2}' | awk -F " " '{print $2}' | awk -F : '{print $1*3600+$2*60+$3}'`
+    echo "INJECT ${elapsed} INJECTED=${injected} FILTERED=${filtered}"
+    if [ "${injected}" == "0" ]; then exit -1; fi
+}
+
+function seed {
+    hadoop fs -mkdir /inject &> /dev/null
+    if (($? == 0));
+    then
+	hadoop fs -put ${NUTCH_DIR}/inject/* /inject &> /dev/null
+    fi
+}
+export NUTCH_DIR="/home/ubuntu/nutch"
+export HADOOP_CLASSPATH=$(JARS=("$NUTCH_DIR"/lib/*.jar); IFS=:; echo "${JARS[*]}")
+export LIBJARS=$(JARS=("$NUTCH_DIR"/lib/*.jar); IFS=,; echo "${JARS[*]}")
+export EXTJARS=$(echo $LIBJARS | sed 's|'${NUTCH_DIR}'/lib/nutch-2.2.jar||'| sed 's|'${NUTCH_DIR}'|hdfs://'${HDFS_NAMENODE}':8020/nutch|g')
+export ARGS="-Dmapred.cache.files=${EXTJARS} -Dmapred.cache.archives=hdfs://"${HDFS_NAMENODE}":8020/plugin -Dmapreduce.job.reduces=6 -Dmapred.min.split.size=100000000 -Dmapreduce.job.ubertask.enable=true"
+export ARGS2="-Dmapred.cache.files=${EXTJARS} -Dmapred.cache.archives=hdfs://"${HDFS_NAMENODE}":8020/plugin -Dmapreduce.job.reduces=5 -Dmapred.min.split.size=100000000 -Dmapreduce.job.ubertask.enable=true" # for generate and update to cap topN
+
+md=-1
+if [ "$#" -ne 0 ];
+then
+    if [ "$1" == "--seed" ]; 
+    then 
+	seed
+	inject 
+	exit
+    else
+	md="$1"
+    fi   
+fi
+
+d=0
+while true;
+do
+
+    echo "======== Depth #${d} ========"
+    export batchID=${RANDOM}
+    generate
+    fetch
+    dbupdate
+
+    d=$((d+1))
+    if [ "${d}" = "${md}" ];
+    then 
+	break
+    fi
+    
+done
+

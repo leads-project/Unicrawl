@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<!-- Configuration overrides used during unit tests. -->
+
+<configuration>
+
+     <property>
+         <name>mapreduce.framework.name</name>
+         <value>local</value>
+     </property>
+
+    <property>
+        <name>parser.skip.truncated</name>
+        <value>false</value>
+        <description>Boolean value for whether we should skip parsing for
+            truncated documents. By default this
+            property is activated due to extremely high levels of CPU which
+            parsing can sometimes take.
+        </description>
+    </property>
+
+    <property>
+        <name>fetcher.threads.fetch</name>
+        <value>4</value>
+    </property>
+
+    <property>
+        <name>fetcher.threads.per.queue</name>
+        <value>4</value>
+    </property>
+    
+    <property>
+        <name>fetcher.parse</name>
+        <value>yes</value>
+    </property>
+
+    <property>
+        <name>content.server.port</name>
+        <value>55000</value>
+        <description>Port of http server serving content.</description>
+    </property>
+
+    <property>
+        <name>fetcher.store.content</name>
+        <value>true</value>
+        <description>If true, fetcher will store content.</description>
+    </property>
+
+    <property>
+      <name>solr.server.url</name>
+      <value>http://localhost:8080/solr/</value>
+    </property>
+
+    <property>
+        <name>fetcher.server.delay</name>
+        <value>0.1</value>
+        <description>The number of seconds the fetcher will delay between
+            successive requests to the same server.</description>
+    </property>
+
+    <property>
+        <name>http.agent.name</name>
+        <value>test-nutch</value>
+    </property>
+
+    <property>
+        <name>http.robots.agents</name>
+        <value>test-nutch,*</value>
+    </property>
+
+    <property>
+        <name>http.agent.name.check</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>http.robots.agents</name>
+        <value>test-nutch,*</value>
+        <description>The agent strings we'll look for in robots.txt files,
+            comma-separated, in decreasing order of precedence. You should
+            put the value of http.agent.name as the first agent name, and keep the
+            default * at the end of the list. E.g.: BlurflDev,Blurfl,*
+        </description>
+    </property>
+
+    <property>
+        <name>storage.data.store.class</name>
+        <value>org.apache.gora.infinispan.store.InfinispanStore</value>
+    </property>
+
+    <property>
+        <name>plugin.folders</name>
+        <value>plugin</value>
+    </property>
+
+    <property>
+        <name>io.serializations</name>
+        <value>org.apache.gora.mapreduce.PersistentSerialization,org.apache.hadoop.io.serializer.WritableSerialization,org.apache.hadoop.io.serializer.avro.AvroReflectSerialization</value>
+    </property>
+
+</configuration>
+

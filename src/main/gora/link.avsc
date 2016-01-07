@@ -1,0 +1,12 @@
+{"name": "Link",
+ "type": "record",
+ "namespace": "org.apache.nutch.storage",
+ "fields": [
+        {"name": "key", "type": ["null","string"], "default":null},
+        {"name": "score", "type": "float", "default":0},
+        {"name": "distance", "type": "int", "default":0},
+        {"name": "batchId", "type": ["null","string"], "default":null},
+        {"name": "in", "type": ["null","string"], "default":null},
+        {"name": "out", "type": ["null","string"], "default":null}
+   ]
+}

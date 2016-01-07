@@ -1,0 +1,9 @@
+{"name": "Host",
+ "type": "record",
+ "namespace": "org.apache.nutch.storage",
+ "fields": [
+        {"name": "metadata", "type": {"type": "map", "values": "bytes"}, "default":{}},
+        {"name": "outlinks", "type": {"type": "map", "values": "string"}, "default":{}},
+        {"name": "inlinks", "type": {"type": "map", "values": "string"}, "default":{}}
+   ]
+}
