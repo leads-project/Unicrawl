@@ -1,6 +1,6 @@
 #!/bin/bash
-export NUTCHDIR="/home/ubuntu/nutch"
-source ${NUTCHDIR}/bin/config.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${DIR}/config.sh
 
 hadoop fs -rm -r -f /inject
 hadoop fs -put -f ${NUTCHDIR}/inject /
