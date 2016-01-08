@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+  <property>
+    <name>storage.data.store.class</name>
+    <value>org.apache.gora.infinispan.store.InfinispanStore</value>
+  </property>
+
+  <property>
+    <name>http.agent.name</name>
+    <value>nutch</value>
+  </property>
+
+  <property>
+    <name>io.serializations</name>
+    <value>org.apache.gora.mapreduce.PersistentSerialization,org.apache.hadoop.io.serializer.WritableSerialization,org.apache.hadoop.io.serializer.avro.AvroReflectSerialization</value>
+  </property>
+
+  <property>
+    <name>plugin.folders</name>
+    <value>plugin</value>
+  </property>
+
+  <property>
+    <name>fetcher.parse</name>
+    <value>true</value>
+  </property>
+
+   <property>
+     <name>db.update.max.newpages</name>
+     <value>2000</value>
+   </property>
+
+    <property>
+      <name>fetcher.store.content</name>
+      <value>true</value>
+    </property>
+
+    <property>
+      <name>db.fetch.retry.max</name>
+      <value>1</value>
+    </property>
+
+    <property>
+      <name>gora.buffer.write.limit</name>
+      <value>500</value>
+    </property>
+
+    <property>
+      <name>gora.buffer.read.limit</name>
+      <value>1000</value>
+    </property>
+
+</configuration>

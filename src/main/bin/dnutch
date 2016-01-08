@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ./config.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${DIR}/config.sh
 
 function generate {
     hadoop jar ${NUTCH_DIR}/lib/nutch-2.2.jar org.apache.nutch.crawl.GeneratorJob ${ARGS2} -batchId ${batchID} -topN 100 &> tmp

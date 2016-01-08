@@ -275,7 +275,7 @@
     <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
     <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9443}"/>
     <socket-binding name="ajp" port="8009"/>
-    <socket-binding name="hotrod" port="11234"/>
+    <socket-binding name="hotrod" port="11222"/>
     <socket-binding name="http" port="8080"/>
     <socket-binding name="https" port="8443"/>
     <socket-binding name="remoting" port="4447"/>
