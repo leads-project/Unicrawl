@@ -79,6 +79,7 @@ cd conf
 jar uvf ../lib/nutch-2.2.jar *
 
 # create seed and set-up unicrawl
+cd ..
 mkdir inject
 echo "http://google.com" >> inject/seed
 ./bin/setup.sh
