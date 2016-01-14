@@ -40,7 +40,7 @@ Below, we explain how to quickly run Unicrawl on your local machine.
 git clone https://github.com/leads-project/Leads-infinispan
 cd Leads-infinispan
 export ISPN_DIR=`pwd`
-mvn clean install -DskipTests
+mvn clean install -DskipTests -s maven-settings.xml
 
 # build and install Apache Gora
 git clone https://github.com/leads-project/gora
@@ -50,6 +50,7 @@ mvn clean install -DskipTests
 
 # build and package unicrawl
 git clone https://github.com/leads-project/Unicrawl
+cd Unicrawl
 export UNICRAWL_DIR=`pwd`
 mvn clean package -DskipTests
 
