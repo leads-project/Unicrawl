@@ -73,7 +73,7 @@ cp -Rf ${UNICRAWL_DIR}/src/main/bin .
 # set $HADOOP_DIST_HOME and $NUTCH_DIR in bin/config.sh to right values
 cp -Rf ${UNICRAWL_DIR}/plugin .
 mkdir conf
-cp ${UNICRAWL_DIR}/src/main/resources/regex-urlfilter.xml.template ./conf
+cp ${UNICRAWL_DIR}/src/main/resources/regex-urlfilter.txt.template ./conf
 cp ${UNICRAWL_DIR}/src/main/resources/regex-normalize.xml.template ./conf
 cp ${UNICRAWL_DIR}/src/test/resources/parse-plugins.xml ./conf
 cd conf
