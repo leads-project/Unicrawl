@@ -40,7 +40,7 @@ Below, we explain how to quickly run Unicrawl on your local machine.
 git clone https://github.com/leads-project/Leads-infinispan
 cd Leads-infinispan
 export ISPN_DIR=`pwd`
-mvn clean install -DskipTests
+mvn clean install -DskipTests -s maven-settings.xml
 
 # build and install Apache Gora
 git clone https://github.com/leads-project/gora
@@ -50,6 +50,7 @@ mvn clean install -DskipTests
 
 # build and package unicrawl
 git clone https://github.com/leads-project/Unicrawl
+cd Unicrawl
 export UNICRAWL_DIR=`pwd`
 mvn clean package -DskipTests
 
@@ -67,13 +68,13 @@ ${ISPN_DIR}/server/integration/build/target/infinispan-server-7.0.1-SNAPSHOT/bin
 mkdir /tmp/Unicrawl
 cd /tmp/Unicrawl
 cp -Rf ${UNICRAWL_DIR}/target/lib/ .
-cp -Rf ${UNICRAWL_DIR}/target/lib/nutch-2.2.jar .
+cp -Rf ${UNICRAWL_DIR}/target/nutch-2.2.jar .
 cp -Rf ${UNICRAWL_DIR}/src/main/bin .
 # set $HADOOP_DIST_HOME and $NUTCH_DIR in bin/config.sh to right values
 cp -Rf ${UNICRAWL_DIR}/plugin .
 mkdir conf
-cp ${UNICRAWL_DIR}/src/main/resources/src/regex-urlfilter.xml.template ./conf
-cp ${UNICRAWL_DIR}/src/main/resources/src/regex-normalize.xml.template ./conf
+cp ${UNICRAWL_DIR}/src/main/resources/regex-urlfilter.txt.template ./conf
+cp ${UNICRAWL_DIR}/src/main/resources/regex-normalize.xml.template ./conf
 cp ${UNICRAWL_DIR}/src/test/resources/parse-plugins.xml ./conf
 cd conf
 jar uvf ../lib/nutch-2.2.jar *
