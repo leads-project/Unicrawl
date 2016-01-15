@@ -17,7 +17,7 @@ and is a batch-processing oriented software (using the MapReduce support of Apac
 In addition, Unicrawl supports geo-replication and page versioning.
 
 Unicrawl was presented at the IEEE CLOUD 2015 conference;
-a white paper is available [online](https://drive.google.com/open?id=0BwFkGepvBDQoakFGdkpKNUNCWmM).
+a white paper is available [online](http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=7214069&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D7214069).
 
 The tests available in [InfinispanMultiSiteNutchTest](https://github.com/leads-project/Unicrawl/blob/4fa7107cc4ded4dda08c07dc4a97721397e14949/src/test/java/org/apache/nutch/multisite/InfinispanMultiSiteNutchTest.java) offer a complete view of the capabilities of Unicrawl in terms of seeding, remote pages fetching and update of the crawl database.
 These tests also demonstrate in an emulated geo-distributed environment how Unicrawl behaves.
