@@ -1,8 +1,7 @@
 #!/bin/sh
-export HADOOP_DIST_HOME=
-export NUTCH_DIR=
+export HADOOP_DIST_HOME=/hadoop-2.5.2/
+export NUTCH_DIR=/tmp/Unicrawl
 export HDFS_NAMENODE=localhost
-
 export HADOOP_COMMON_HOME=${HADOOP_DIST_HOME}
 export HADOOP_CONF_DIR=${HADOOP_DIST_HOME}/etc/hadoop
 export HADOOP_HDFS_HOME=${HADOOP_DIST_HOME}
