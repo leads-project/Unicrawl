@@ -26,15 +26,23 @@ RUN mvn clean package -DskipTests -s maven-settings.xml
 RUN cp /Unicrawl/src/main/resources/infinispan/clustered.xml /Leads-infinispan/server/integration/build/target/infinispan-server-7.0.1-SNAPSHOT/standalone/configuration/
 RUN /Leads-infinispan/server/integration/build/target/infinispan-server-7.0.1-SNAPSHOT/bin/clustered.sh &
 
+RUN apt-get update && apt-get -y install openssh-server
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
+RUN service ssh start
+
 # Install Hadoop in Pseudo-distributed mode
 WORKDIR /
 RUN wget http://mirror.easyname.ch/apache/hadoop/common/hadoop-2.5.2/hadoop-2.5.2.tar.gz
-RUN tar xzvf hadoop-2.5.2.tar.gz && rm hadoop-2.5.2.tar.gz
+RUN tar xzf hadoop-2.5.2.tar.gz && rm hadoop-2.5.2.tar.gz
 COPY core-site.xml /hadoop-2.5.2/etc/hadoop/
 COPY hdfs-site.xml /hadoop-2.5.2/etc/hadoop/
 COPY mapred-site.xml /hadoop-2.5.2/etc/hadoop/
-
-#TOFINISH HADOOP
+RUN ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa 
+RUN cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+WORKDIR /hadoop-2.5.2/
+RUN bin/hadoop namenode -format
+RUN sbin/start-all.sh
 
 # create a unicrawl deployment
 RUN mkdir /tmp/Unicrawl
@@ -42,7 +50,6 @@ WORKDIR /tmp/Unicrawl
 RUN cp -Rf /Unicrawl/target/lib/ .
 RUN cp -Rf /Unicrawl/target/nutch-2.2.jar .
 RUN cp -Rf /Unicrawl/src/main/bin .
-#RUN # set $HADOOP_DIST_HOME and $NUTCH_DIR in bin/config.sh to right values
 
 COPY config.sh /tmp/Unicrawl/bin/
 
@@ -53,10 +60,9 @@ RUN cp /Unicrawl/src/main/resources/regex-normalize.xml.template /tmp/Unicrawl/c
 RUN cp /Unicrawl/src/test/resources/parse-plugins.xml /tmp/Unicrawl/conf
 WORKDIR /tmp/Unicrawl/conf
 RUN jar uvf ../nutch-2.2.jar *
-
 WORKDIR /tmp/Unicrawl
 RUN mkdir inject
 RUN echo "http://google.com" >> inject/seed 
-RUN sh bin/setup.sh
+RUN bash bin/setup.sh
 
 
