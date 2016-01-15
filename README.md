@@ -68,7 +68,7 @@ ${ISPN_DIR}/server/integration/build/target/infinispan-server-7.0.1-SNAPSHOT/bin
 mkdir /tmp/Unicrawl
 cd /tmp/Unicrawl
 cp -Rf ${UNICRAWL_DIR}/target/lib/ .
-cp -Rf ${UNICRAWL_DIR}/target/lib/nutch-2.2.jar .
+cp -Rf ${UNICRAWL_DIR}/target/nutch-2.2.jar .
 cp -Rf ${UNICRAWL_DIR}/src/main/bin .
 # set $HADOOP_DIST_HOME and $NUTCH_DIR in bin/config.sh to right values
 cp -Rf ${UNICRAWL_DIR}/plugin .
