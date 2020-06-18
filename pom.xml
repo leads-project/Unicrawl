@@ -39,7 +39,7 @@ limitations under the License.
         <hadoop.version>2.5.2</hadoop.version>
         <gora.version>0.5-SNAPSHOT</gora.version>
         <infinispan.version>7.0.1-SNAPSHOT</infinispan.version>
-        <lucene-solr.version>4.10.1</lucene-solr.version>
+        <lucene-solr.version>8.5.1</lucene-solr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jbossjta.version>4.17.13.Final</jbossjta.version>
     </properties>
