@@ -370,7 +370,7 @@ limitations under the License.
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>0.19.4</version>
+            <version>6.8.15</version>
             <optional>true</optional>
         </dependency>
         <dependency>
